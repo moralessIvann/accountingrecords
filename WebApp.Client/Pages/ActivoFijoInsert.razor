@@ -1,0 +1,100 @@
+﻿@page "/activofijoinsert"
+
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using WebApp.Client.Services;
+@using global::Shared;
+@using global::Shared.DTOs;
+
+@inject IActivoFijoService activoFijoService;
+@inject ICategoriaService categoriaService;
+@inject NavigationManager navegacion;
+@inject SweetAlertService Swal;
+
+
+<h3>Nuevo Activo Fijo</h3>
+<br>
+<EditForm Model="activoFijo" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+
+    <div class="mb-3">
+        <label class="form-label">Nombre</label>
+        <InputText class="form-control" @bind-Value="activoFijo.NombreActivoFijo"></InputText>
+        <ValidationMessage For="@(() => activoFijo.NombreActivoFijo)"></ValidationMessage>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Categoria</label>
+        <InputSelect class="form-select" @bind-Value="activoFijo.IdCategoria">
+            <option value="0">-- Seleccionar --</option>
+            @foreach (var item in listCategoria)
+            {
+                <option value="@item.IdCategoria">@item.NombreCategoria</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => activoFijo.IdCategoria)"></ValidationMessage>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Marca</label>
+        <InputText class="form-control" @bind-Value="activoFijo.Marca"></InputText>
+        <ValidationMessage For="@(() => activoFijo.Marca)"></ValidationMessage>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Modelo</label>
+        <InputText class="form-control" @bind-Value="activoFijo.Modelo"></InputText>
+        <ValidationMessage For="@(() => activoFijo.Modelo)"></ValidationMessage>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Numero de Serie</label>
+        <InputText class="form-control" @bind-Value="activoFijo.NumeroSerie"></InputText>
+        <ValidationMessage For="@(() => activoFijo.NumeroSerie)"></ValidationMessage>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Valor de Adquisicion</label>
+        <InputNumber class="form-control" @bind-Value="activoFijo.ValorAdquisicion" step="0.01" format="N2"></InputNumber>
+        <ValidationMessage For="@(() => activoFijo.ValorAdquisicion)"></ValidationMessage>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Fecha Creacion</label>
+        <InputDate class="form-control" @bind-Value="activoFijo.FechaCreacion"></InputDate>
+        <ValidationMessage For="@(() => activoFijo.FechaCreacion)"></ValidationMessage>
+    </div>
+    <br>
+    <button class="btn btn-primary mx-2" type="submit">Guardar Activo Fijo</button>
+    <a class="btn btn-warning" href="activofijolist">Volver</a>
+</EditForm>
+
+@code 
+{
+
+    [Parameter]
+    public int idActivoFijo { get; set; } = 0;
+
+    ActivoFijoDTO activoFijo = new ActivoFijoDTO();
+    List<CategoriaDTO> listCategoria = new List<CategoriaDTO>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        activoFijo.FechaCreacion = DateTime.Today;
+        listCategoria = await categoriaService.List();
+
+    }
+
+    private async Task OnValidSubmit()
+    {
+        var result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "El activo fijo ha sido guardado",
+                Icon = SweetAlertIcon.Success,
+                ShowConfirmButton = true,
+                Timer = 2500
+            });
+
+        if (result.IsConfirmed)
+        {
+            var value = await activoFijoService.Save(activoFijo);
+            
+            if (value != 0)
+                navegacion.NavigateTo("/activofijolist");
+        }
+    }
+}

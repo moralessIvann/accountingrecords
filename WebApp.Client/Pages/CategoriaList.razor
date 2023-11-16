@@ -1,0 +1,53 @@
+﻿@page "/categorialist"
+
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using WebApp.Client.Services;
+@using global::Shared;
+@using global::Shared.DTOs;
+
+@* @inject SweetAlertService Swal; *@
+@inject ICategoriaService categoriaFijoService;
+
+<h3>Lista de Categorias</h3>
+<br>
+<table style="width:50%" class="table">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Nombre </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (listCategoria == null)
+        {
+            <tr>
+                <td colspan="2" align="center">
+                    <img style="width:50px" src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif" />
+                </td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var item in listCategoria)
+            {
+                <tr>
+                    <td>@item.IdCategoria</td>
+                    <td>@item.NombreCategoria</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<br>
+<a class="btn btn-success btn-sm mb-3" href="categoriainsert">Crear Nueva Categoria</a>
+
+@code
+{
+    List<CategoriaDTO>? listCategoria = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        listCategoria = await categoriaFijoService.List();
+    }
+}

@@ -1,0 +1,104 @@
+﻿@page "/activofijolist"
+
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using System.Globalization;
+@using WebApp.Client.Services;
+@using global::Shared;
+@using global::Shared.DTOs;
+
+@inject System.Globalization.CultureInfo newCulture
+@inject IActivoFijoService activoFijoService;
+
+<h3>Activos Fijos</h3>
+<br>
+<div class="form-group">
+    <input class="form-control" type="text" placeholder="filtrar ..."
+    @bind="filter"
+    @bind:event="oninput">
+</div>
+<br>
+<table class="table">
+    <thead>
+        <tr>
+            @* <th>No.</th> *@
+            <th>Nombre</th>
+            <th>Categoria</th>
+            <th>Modelo</th>
+            <th>Marca</th>
+            <th>Numero de Serie</th>
+            <th>Valor de Adquisicion</th>
+            <th>Fecha Contrato</th>
+            <th>Codigo RSI</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @if(listActivoFijo == null)
+        {
+            <tr>
+                <td colspan="8" align="center">
+                    <img style="width:50px" src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif" />
+                </td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var item in listActivoFijo)
+            {
+                if (!Filtering(item))
+                    continue;
+
+                <tr>
+                    @* <td>@item.IdActivoFijo</td> *@
+                    <td>@item.NombreActivoFijo</td>
+                    <td>@item.Categoria!.NombreCategoria</td> @* omitir que sea nullable *@
+                    <td>@item.Modelo</td>
+                    <td>@item.Marca</td>
+                    <td>@item.NumeroSerie</td>
+                    <td>$ @FormatNumber(item.ValorAdquisicion)</td>
+                    <td>@item.FechaCreacion.ToString("dd/MMMM/yyyy")</td>
+                    <td>@item.CodigoRsi</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<br>
+<a class="btn btn-success btn-sm mb-3" href="activofijoinsert">Crear Nuevo Activo Fijo</a>
+
+@code 
+{
+    List<ActivoFijoDTO>? listActivoFijo = null;
+    public string? filter { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        listActivoFijo = await activoFijoService.List();
+    }
+
+    private string FormatNumber(decimal num)
+    {
+        return num.ToString("0.00", newCulture);
+    }
+
+    public bool Filtering(ActivoFijoDTO listActivoFijo)
+    {
+        if (string.IsNullOrEmpty(filter))
+            return true;
+
+        if (listActivoFijo.Modelo.ToString()?.StartsWith(filter) ?? false)
+            return true;
+
+        if (listActivoFijo.Marca.ToString()?.StartsWith(filter) ?? false)
+            return true;
+
+        if (listActivoFijo?.Categoria?.NombreCategoria?.ToString()?.StartsWith(filter) == true)
+            return true;
+
+        if (listActivoFijo?.CodigoRsi?.ToString()?.StartsWith(filter) == true)
+            return true;
+        
+        return false;
+    }
+}

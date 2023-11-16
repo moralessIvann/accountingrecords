@@ -1,0 +1,62 @@
+﻿@page "/categoriainsert"
+
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using WebApp.Client.Services;
+@using global::Shared;
+@using global::Shared.DTOs;
+
+@inject ICategoriaService categoriaService;
+@inject NavigationManager navegacion;
+@inject SweetAlertService Swal;
+
+
+<h3>Nuevo Categoria</h3>
+<br>
+<EditForm Model="categoria" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+
+    <div class="mb-3">
+        <label class="form-label">Nombre</label>
+        <InputText class="form-control" @bind-Value="categoria.NombreCategoria"></InputText>
+        <ValidationMessage For="@(() => categoria.NombreCategoria)"></ValidationMessage>
+    </div>
+
+    <br>
+    <button class="btn btn-primary mx-2" type="submit">Guardar Categoria</button>
+    <a class="btn btn-warning" href="categorialist">Volver</a>
+</EditForm>
+
+@code 
+{
+
+    [Parameter]
+    public int idActivoFijo { get; set; } = 0;
+
+    CategoriaDTO categoria = new CategoriaDTO();
+    List<CategoriaDTO> listCategoria = new List<CategoriaDTO>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        listCategoria = await categoriaService.List();
+    }
+
+    private async Task OnValidSubmit()
+    {
+        var result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "La categoria ha sido guardada",
+                Icon = SweetAlertIcon.Success,
+                ShowConfirmButton = true,
+                Timer = 2500
+            });
+
+        if (result.IsConfirmed)
+        {
+            var value = await categoriaService.Save(categoria);
+
+            if(value != 0)
+                navegacion.NavigateTo("/categorialist");
+        }
+    }
+}
