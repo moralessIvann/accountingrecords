@@ -46,15 +46,15 @@ When the field is completed (can't be empty), click on "Guardar Categoria". If e
 You can go back to category list by clicking on "Volver" yellow button.
 
 <p align="center">
-	<img src="documentation_imgs/create_new_category.PNG"  width="1000" height="500">
+	<img src="documentation_imgs/create_new_category.PNG"  width="600" height="400">
 </p>
 <p align="center">
-	<img src="documentation_imgs/category_created.PNG"  width="1000" height="500">
+	<img src="documentation_imgs/category_created.PNG"  width="600" height="400">
 </p>
 
 If field is empty, you will get the message "El campo no puede estar vacio".
 <p align="center">
-	<img src="documentation_imgs/create_new_category_validation.PNG"  width="1000" height="500">
+	<img src="documentation_imgs/create_new_category_validation.PNG"  width="600" height="400">
 </p>
 
 ## Fixed Assets List
@@ -72,7 +72,7 @@ When fields are completed, click on "Guardar Activo Fijo" blue button to save da
 You can go back to category list by clicking on "Volver" yellow button.
 
 <p align="center">
-	<img src="documentation_imgs/new_fixed_asset.PNG"  width="1000" height="500">
+	<img src="documentation_imgs/new_fixed_asset.PNG"  width="600" height="400">
 </p>
 
 If field is empty, you will get the message "El campo no puede estar vacio".
@@ -85,13 +85,12 @@ If field is empty, you will get the message "El campo no puede estar vacio".
 When fixed asset is registered, you can search it on the filter bar by asset code, brand, model, and category.
 
 <p align="center">
-	<img src="documentation_imgs/filter.PNG"  width="1000" height="500">
+	<img src="documentation_imgs/filter.PNG"  width="1500" height="500">
 </p>
 
 
 ## App Demonstration
-[App Demo]([https://pages.github.com/](https://drive.google.com/file/d/19GxcjkZZYj7ZYvh8NOW6YXPrSXuDS81W/view?usp=sharing)https://drive.google.com/file/d/19GxcjkZZYj7ZYvh8NOW6YXPrSXuDS81W/view?usp=sharing).
-
+App Demo ([https://pages.github.com/](https://drive.google.com/file/d/19GxcjkZZYj7ZYvh8NOW6YXPrSXuDS81W/view?usp=sharing)https://drive.google.com/file/d/19GxcjkZZYj7ZYvh8NOW6YXPrSXuDS81W/view?usp=sharing/).
 <br>
 
 
